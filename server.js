@@ -1,7 +1,15 @@
 var request = require('request');
 var restify = require('restify');
+var corsMiddleware = require('restify-cors-middleware')
 
 var server = restify.createServer();
+
+var cors = corsMiddleware({
+    origins: ['*'],
+})
+
+server.pre(cors.preflight);
+server.use(cors.actual);
 
 server.get('/', function(req, res, next) {
     var options = {  
