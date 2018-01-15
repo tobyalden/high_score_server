@@ -24,10 +24,10 @@ server.get('/', function(req, res, next) {
     };
     request(options, function(_err, _res, _body) {
         if(_err) {
-            res.send({'status': 'Error'});
+            res.send(404, {'status': 'Error'});
         }
         else {
-            res.send(JSON.parse(_body));
+            res.send(200, JSON.parse(_body));
         }
     });
     return next();
@@ -53,10 +53,10 @@ server.post('/', function(req, res, next) {
         };
         request(options, function(_err, _res, _body) {
             if(_err) {
-                res.send({'status': 'Error'});
+                res.send(404, {'status': 'Error'});
             }
             else {
-                res.send({'status': 'Score submitted'});
+                res.send(201, {'status': 'Score submitted'});
             }
         });
     }
