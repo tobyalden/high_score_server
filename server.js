@@ -10,9 +10,10 @@ var cors = corsMiddleware({
 
 server.pre(cors.preflight);
 server.use(cors.actual);
+server.use(restify.plugins.bodyParser());
 
 server.get('/', function(req, res, next) {
-    var options = {  
+    var options = {
         url: 'https://gardenerhighscores.firebaseio.com/highScores.json',
         method: 'GET',
         headers: {
@@ -21,9 +22,44 @@ server.get('/', function(req, res, next) {
             'User-Agent': 'high-score-table'
         }
     };
-    request(options, function(_err, _res, _body) {  
-        res.send(JSON.parse(_body));  
+    request(options, function(_err, _res, _body) {
+        if(_err) {
+            res.send({'status': 'Error'});
+        }
+        else {
+            res.send(JSON.parse(_body));
+        }
     });
+    return next();
+});
+
+server.post('/', function(req, res, next) {
+    var log = req.body.log;
+    var score = req.body.score;
+    if(typeof log == 'string' && typeof score == 'number') {
+        var options = {
+            url: 'https://gardenerhighscores.firebaseio.com/highScores.json',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'User-Agent': 'high-score-table'
+            },
+            json: true,
+            body: {
+                'log': log,
+                'score': score
+            }
+
+        };
+        request(options, function(_err, _res, _body) {
+            if(_err) {
+                res.send({'status': 'Error'});
+            }
+            else {
+                res.send({'status': 'Score submitted'});
+            }
+        });
+    }
     return next();
 });
 
