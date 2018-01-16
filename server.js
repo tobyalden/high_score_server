@@ -39,7 +39,7 @@ server.post('/', function(req, res, next) {
     var score = req.body.score;
     if(typeof log == 'string' && typeof score == 'number') {
         var options = {
-            url: 'https://gardenerhighscores.firebaseio.com/highScores.json?auth=' + process.env.DB_SECRET,
+            url: 'https://gardenerhighscores.firebaseio.com/highScores.json?auth=' + process.env.DB_KEY,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
