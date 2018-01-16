@@ -36,7 +36,7 @@ server.get('/', function(req, res, next) {
 });
 
 function hashScore(score) {
-    return score == process.env.*HASH_SECRET % (2^32);
+    return score * process.env.HASH_SECRET % (2^32);
 }
 
 server.post('/', function(req, res, next) {
