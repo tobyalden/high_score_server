@@ -45,10 +45,13 @@ server.post('/', function(req, res, next) {
     var validateFields = (
         typeof log == 'string'
         && typeof score == 'number'
-        && typeof score == 'scoreHash'
+        && typeof scoreHash == 'number'
     );
     var validateScore = hashScore(score) == scoreHash;
-    if(validateFields && validateScore) {
+    if(!validateScore) {
+        res.send(404, {'status': 'Score failed validation.'});
+    }
+    else if(validateFields && validateScore) {
         var options = {
             url: 'https://gardenerhighscores.firebaseio.com/highScores.json?auth=' + process.env.DB_KEY,
             method: 'POST',
