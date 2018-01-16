@@ -1,3 +1,4 @@
+require('./secret.js');
 var request = require('request');
 var restify = require('restify');
 var corsMiddleware = require('restify-cors-middleware')
@@ -37,7 +38,14 @@ server.get('/', function(req, res, next) {
 server.post('/', function(req, res, next) {
     var log = req.body.log;
     var score = req.body.score;
-    if(typeof log == 'string' && typeof score == 'number') {
+    var scoreHash = req.body.scoreHash;
+    var validateFields = (
+        typeof log == 'string'
+        && typeof score == 'number'
+        && typeof score == 'scoreHash'
+    );
+    var validateScore = hashScore(score) == scoreHash;
+    if(validateFields && validateScore) {
         var options = {
             url: 'https://gardenerhighscores.firebaseio.com/highScores.json?auth=' + process.env.DB_KEY,
             method: 'POST',
