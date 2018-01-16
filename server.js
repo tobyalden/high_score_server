@@ -6,17 +6,11 @@ var server = restify.createServer();
 
 var cors = corsMiddleware({
     origins: ['*'],
+    allowedMethods: ['GET', 'POST']
 })
 
 server.pre(cors.preflight);
 server.use(cors.actual);
-var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-    next();
-}
-server.use(allowCrossDomain);
 server.use(restify.plugins.bodyParser());
 
 server.get('/', function(req, res, next) {
