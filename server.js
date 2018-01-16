@@ -1,4 +1,3 @@
-require('./secret.js');
 var request = require('request');
 var restify = require('restify');
 var corsMiddleware = require('restify-cors-middleware')
